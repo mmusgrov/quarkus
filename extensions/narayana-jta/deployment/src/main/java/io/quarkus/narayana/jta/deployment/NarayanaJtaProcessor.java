@@ -2,8 +2,6 @@ package io.quarkus.narayana.jta.deployment;
 
 import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 
-import java.util.Properties;
-
 import javax.transaction.TransactionScoped;
 
 import com.arjuna.ats.internal.arjuna.coordinator.CheckedActionFactoryImple;
@@ -11,7 +9,6 @@ import com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionManagerImpl
 import com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionSynchronizationRegistryImple;
 import com.arjuna.ats.internal.jta.transaction.arjunacore.UserTransactionImple;
 import com.arjuna.ats.jta.common.JTAEnvironmentBean;
-import com.arjuna.common.util.propertyservice.PropertiesFactory;
 
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.ContextRegistrarBuildItem;
@@ -27,6 +24,7 @@ import io.quarkus.deployment.builditem.substrate.SubstrateSystemPropertyBuildIte
 import io.quarkus.narayana.jta.runtime.CDIDelegatingTransactionManager;
 import io.quarkus.narayana.jta.runtime.NarayanaJtaProducers;
 import io.quarkus.narayana.jta.runtime.NarayanaJtaRecorder;
+import io.quarkus.narayana.jta.runtime.NarayanaQuarkusConfiguration;
 import io.quarkus.narayana.jta.runtime.TransactionManagerConfiguration;
 import io.quarkus.narayana.jta.runtime.context.TransactionContext;
 import io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorMandatory;
@@ -42,6 +40,7 @@ class NarayanaJtaProcessor {
      * The transactions configuration.
      */
     TransactionManagerConfiguration transactions;
+    NarayanaQuarkusConfiguration narayanaQuarkusConfiguration;
 
     @BuildStep
     public SubstrateSystemPropertyBuildItem substrateSystemPropertyBuildItem() {
@@ -76,12 +75,7 @@ class NarayanaJtaProcessor {
         additionalBeans.produce(builder.build());
 
         //we want to force Arjuna to init at static init time
-        Properties defaultProperties = PropertiesFactory.getDefaultProperties();
-        recorder.setDefaultProperties(defaultProperties);
-        // This must be done before setNodeName as the code in setNodeName will create a TSM based on the value of this property
-        recorder.disableTransactionStatusManager();
-        recorder.setNodeName(transactions);
-        recorder.setDefaultTimeout(transactions);
+        recorder.setConfig(transactions, narayanaQuarkusConfiguration);
     }
 
     @BuildStep
