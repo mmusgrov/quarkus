@@ -67,6 +67,7 @@
         <module>narayana-jta</module>
         <module>narayana-stm</module>
         <module>narayana-lra-coordinator</module>
+        <module>narayana-lra-participant</module>
         <module>agroal</module>
         <module>jdbc</module>
         <module>hibernate-orm</module>

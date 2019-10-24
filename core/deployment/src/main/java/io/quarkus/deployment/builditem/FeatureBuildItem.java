@@ -41,6 +41,7 @@ public final class FeatureBuildItem extends MultiBuildItem {
     public static final String NARAYANA_JTA = "narayana-jta";
     public static final String NARAYANA_STM = "narayana-stm";
     public static final String NARAYANA_LRA_COORDINATOR = "narayana-lra-coordinator";
+    public static final String NARAYANA_LRA_PARTICIPANT = "narayana-lra-participant";
     public static final String REACTIVE_PG_CLIENT = "reactive-pg-client";
     public static final String REACTIVE_MYSQL_CLIENT = "reactive-mysql-client";
     public static final String NEO4J = "neo4j";
