@@ -66,7 +66,6 @@ public class NarayanaJtaRecorder {
         coordinatorEnvironmentBean.setCommitOnePhase(config.commitOnePhase);
         coordinatorEnvironmentBean.setReadonlyOptimisation(config.readonlyOptimisation);
         coordinatorEnvironmentBean.setStartDisabled(config.startDisabled);
-        coordinatorEnvironmentBean.setDefaultTimeout(config.defaultTimeout);
         coordinatorEnvironmentBean.setBeforeCompletionWhenRollbackOnly(config.beforeCompletionWhenRollbackOnly);
         coordinatorEnvironmentBean.setMaintainHeuristics(config.maintainHeuristics);
         coordinatorEnvironmentBean.setAsyncCommit(config.asyncCommit);
