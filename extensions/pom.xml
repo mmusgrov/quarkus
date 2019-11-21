@@ -134,6 +134,10 @@
 
         <!-- Logging -->
         <module>logging-json</module>
+        
+        <!-- Templating -->
+        <module>qute</module>
+        <module>qute-resteasy</module>
     </modules>
 
     <!-- Unfortunately the config below introduces a build dependency on the maven plugin
