@@ -252,7 +252,6 @@ public class SmallRyeMetricsProcessor {
     @BuildStep
     @Record(STATIC_INIT)
     void registerMetricsFromAnnotatedMethods(SmallRyeMetricsRecorder metrics,
-            BeanContainerBuildItem beanContainerBuildItem,
             BeanArchiveIndexBuildItem beanArchiveIndex) {
         IndexView index = beanArchiveIndex.getIndex();
         JandexBeanInfoAdapter beanInfoAdapter = new JandexBeanInfoAdapter(index);
