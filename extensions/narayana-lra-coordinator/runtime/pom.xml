@@ -14,7 +14,7 @@
     <name>Quarkus - Narayana LRA Coordinator- Runtime</name>
 
     <properties>
-        <narayana.version>5.10.0.Final-SNAPSHOT</narayana.version>
+        <narayana.version>5.10.2.Final-SNAPSHOT</narayana.version>
         <version.microprofile.lra.api>1.0-RC1</version.microprofile.lra.api>
     </properties>
 
@@ -28,11 +28,19 @@
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>javax.enterprise</groupId>
+                    <artifactId>cdi-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-jsonb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
         </dependency>
     </dependencies>
 

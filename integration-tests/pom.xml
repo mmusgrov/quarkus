@@ -85,6 +85,7 @@
         <module>mongodb-panache</module>
         <module>narayana-stm</module>
         <module>narayana-jta</module>
+        <module>narayana-lra-coordinator</module>
         <module>elytron-security-jdbc</module>
         <module>vertx-graphql</module>
         <module>jpa-without-entity</module>
