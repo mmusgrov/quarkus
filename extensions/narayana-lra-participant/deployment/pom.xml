@@ -17,6 +17,17 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-jsonb-deployment</artifactId>
+           <exclusions>
+                <exclusion>
+                   <groupId>jakarta.json.bind</groupId>
+                    <artifactId>jakarta.json.bind-api</artifactId>
+                </exclusion>
+                <exclusion>
+                   <groupId>org.glassfish</groupId>
+                    <artifactId>jakarta.json</artifactId>
+                </exclusion>
+           </exclusions>
+
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
