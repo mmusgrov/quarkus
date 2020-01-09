@@ -12,6 +12,14 @@
 
     <artifactId>quarkus-extensions-parent</artifactId>
     <name>Quarkus - Extensions - Parent pom</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.narayana.rts</groupId>
+            <artifactId>lra-proxy-api</artifactId>
+            <version>5.10.2.Final-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
     <packaging>pom</packaging>
     <modules>
         <!-- Plumbing -->

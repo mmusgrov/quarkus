@@ -14,7 +14,8 @@
     <name>Quarkus - Narayana LRA Coordinator- Runtime</name>
 
     <properties>
-        <narayana.version>5.10.0.Final-SNAPSHOT</narayana.version>
+        <xnarayana.version>5.10.1.Final</xnarayana.version>
+        <narayana.version>5.10.2.Final-SNAPSHOT</narayana.version>
         <version.microprofile.lra.api>1.0-RC1</version.microprofile.lra.api>
     </properties>
 
@@ -34,6 +35,36 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-jsonb</artifactId>
         </dependency>
+        <!-- JAXRS LRA filters for embedded mode -->
+        <dependency>
+            <groupId>org.jboss.narayana.rts</groupId>
+            <artifactId>narayana-lra</artifactId>
+            <version>${narayana.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.narayana.rts</groupId>
+            <artifactId>lra-service-base</artifactId>
+            <version>${narayana.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.narayana.rts</groupId>
+            <artifactId>lra-proxy-api</artifactId>
+            <version>${narayana.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- end JAXRS LRA filters -->
     </dependencies>
 
     <build>

@@ -1,9 +1,10 @@
-package io.quarkus.narayana.stm.deployment;
+package io.quarkus.narayana.lra.deployment;
 
 import javax.inject.Inject;
 
 import org.jboss.jandex.DotName;
 
+import io.narayana.lra.client.internal.proxy.nonjaxrs.LRAParticipantRegistry;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanDefiningAnnotationBuildItem;
 import io.quarkus.deployment.annotations.BuildProducer;
@@ -24,7 +25,8 @@ class NarayanaLRAProcessor {
 
     @BuildStep
     BeanDefiningAnnotationBuildItem additionalBeanDefiningAnnotation() {
+        LRAParticipantRegistry pr;
         return new BeanDefiningAnnotationBuildItem(
-                DotName.createSimple("io.narayana.lra.client.internal.proxy.nonjaxrs.LRAParticipantRegistry"));
+                DotName.createSimple(LRAParticipantRegistry.class.getName()));
     }
 }
