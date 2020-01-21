@@ -14,6 +14,7 @@
 
     <properties>
         <maven.clean.plugin.version>2.5</maven.clean.plugin.version>
+        <quarkus.http.test-port>8080</quarkus.http.test-port>
     </properties>
 
     <dependencies>

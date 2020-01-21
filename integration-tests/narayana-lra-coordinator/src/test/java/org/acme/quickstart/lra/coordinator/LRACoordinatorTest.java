@@ -1,6 +1,7 @@
 package org.acme.quickstart.lra.coordinator;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 
 @QuarkusTest
 class LRACoordinatorTest {
-
     @Test
     void testStartLRA() {
         // ask the coordinator to start an LRA
@@ -31,6 +32,24 @@ class LRACoordinatorTest {
         lras = getLRAs();
 
         assertFalse(lras.contains(lra), "The Narayana LRA coordinator still knows about a closed LRA");
+    }
+
+    @Test
+    void testParticipant() {
+        System.out.println(RestAssured.baseURI + ":" + RestAssured.port + RestAssured.basePath);
+
+        given()
+                .when()
+                .post("/txns/tx")
+                .then()
+                .statusCode(200);
+
+        Response response = given()
+                .when().get("/txns/completions");
+
+        String completions = response.getBody().print();
+
+        assertEquals("1", completions);
     }
 
     private String startLRA() {
