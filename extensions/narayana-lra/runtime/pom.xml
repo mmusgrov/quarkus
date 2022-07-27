@@ -21,15 +21,11 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.narayana.rts</groupId>
-            <artifactId>narayana-lra</artifactId>
+            <artifactId>narayana-lra-jakarta</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.narayana.rts</groupId>
                     <artifactId>narayana-lra</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jboss.narayana.rts</groupId>
-                    <artifactId>lra-service-base</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -39,11 +35,45 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.narayana.rts</groupId>
-            <artifactId>lra-service-base</artifactId>
+            <artifactId>lra-service-base-jakarta</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.spec.javax.ws.rs</groupId>
+                    <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.jboss.narayana.rts</groupId>
-            <artifactId>lra-proxy-api</artifactId>
+            <artifactId>lra-proxy-api-jakarta</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.narayana.rts</groupId>
+                    <artifactId>lra-proxy-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.narayana.rts</groupId>
+            <artifactId>lra-client-jakarta</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.narayana.rts</groupId>
+                    <artifactId>lra-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.activation</groupId>
+                    <artifactId>jakarta.activation-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.lra</groupId>
+            <artifactId>microprofile-lra-api</artifactId>
         </dependency>
     </dependencies>
 
