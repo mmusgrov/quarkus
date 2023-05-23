@@ -15,6 +15,7 @@ import com.arjuna.ats.jbossatx.jta.RecoveryManagerService;
 import com.arjuna.ats.jta.UserTransaction;
 
 import io.quarkus.arc.Unremovable;
+import io.quarkus.narayana.jta.runtime.internal.tsr.TransactionSynchronizationRegistryWrapper;
 
 @Dependent
 public class NarayanaJtaProducers {
@@ -42,7 +43,8 @@ public class NarayanaJtaProducers {
     @ApplicationScoped
     @Unremovable // needed by Arc for transactional observers
     public TransactionSynchronizationRegistry transactionSynchronizationRegistry() {
-        return new TransactionSynchronizationRegistryImple();
+        return new TransactionSynchronizationRegistryWrapper(new TransactionSynchronizationRegistryImple());
+        //        return new TransactionSynchronizationRegistryImple();
     }
 
     @Produces
