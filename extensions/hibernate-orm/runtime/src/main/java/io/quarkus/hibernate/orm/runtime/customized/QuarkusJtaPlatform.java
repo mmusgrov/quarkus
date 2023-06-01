@@ -4,6 +4,7 @@ import javax.transaction.Synchronization;
 import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
+import javax.transaction.TransactionSynchronizationRegistry;
 import javax.transaction.UserTransaction;
 
 import org.hibernate.engine.transaction.jta.platform.internal.JtaSynchronizationStrategy;
@@ -11,17 +12,31 @@ import org.hibernate.engine.transaction.jta.platform.internal.TransactionManager
 import org.hibernate.engine.transaction.jta.platform.internal.TransactionManagerBasedSynchronizationStrategy;
 import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform;
 
+import io.quarkus.arc.Arc;
+
 public final class QuarkusJtaPlatform implements JtaPlatform, TransactionManagerAccess {
 
     public static final QuarkusJtaPlatform INSTANCE = new QuarkusJtaPlatform();
 
     private final JtaSynchronizationStrategy tmSynchronizationStrategy = new TransactionManagerBasedSynchronizationStrategy(
             this);
+    private volatile TransactionSynchronizationRegistry transactionSynchronizationRegistry;
+
     private volatile TransactionManager transactionManager;
     private volatile UserTransaction userTransaction;
 
     private QuarkusJtaPlatform() {
         //nothing
+    }
+
+    public TransactionSynchronizationRegistry retrieveTransactionSynchronizationRegistry() {
+        TransactionSynchronizationRegistry transactionSynchronizationRegistry = this.transactionSynchronizationRegistry;
+        if (transactionSynchronizationRegistry == null) {
+            transactionSynchronizationRegistry = Arc.container().instance(TransactionSynchronizationRegistry.class).get();
+
+            this.transactionSynchronizationRegistry = transactionSynchronizationRegistry;
+        }
+        return transactionSynchronizationRegistry;
     }
 
     @Override
@@ -56,7 +71,7 @@ public final class QuarkusJtaPlatform implements JtaPlatform, TransactionManager
 
     @Override
     public void registerSynchronization(Synchronization synchronization) {
-        this.tmSynchronizationStrategy.registerSynchronization(synchronization);
+        retrieveTransactionSynchronizationRegistry().registerInterposedSynchronization(synchronization);
     }
 
     @Override
