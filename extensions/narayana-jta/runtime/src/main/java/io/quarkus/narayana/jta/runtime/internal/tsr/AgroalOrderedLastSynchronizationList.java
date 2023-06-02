@@ -31,8 +31,10 @@ import org.jboss.logging.Logger;
 public class AgroalOrderedLastSynchronizationList implements Synchronization {
     private static final Logger LOGGER = Logger.getLogger(AgroalOrderedLastSynchronizationList.class);
     private static final String ARC_PKG_NAME = "io.quarkus.arc.impl";
+    private static final String HIBERNATE_PKG_NAME = "org.hibernate";
     private static final String AGROAL_PKG_NAME = "io.agroal.narayana";
     private final List<Synchronization> agroalSyncs = new ArrayList<Synchronization>();
+    private final List<Synchronization> hibernateSyncs = new ArrayList<Synchronization>();
     private final List<Synchronization> otherSyncs = new ArrayList<Synchronization>();
     private final List<Synchronization> arqSyncs = new ArrayList<Synchronization>();
     private final TransactionSynchronizationRegistry tsr;
@@ -68,6 +70,8 @@ public class AgroalOrderedLastSynchronizationList implements Synchronization {
             agroalSyncs.add(synchronization);
         } else if (synchronization.getClass().getName().startsWith(ARC_PKG_NAME)) {
             arqSyncs.add(synchronization);
+        } else if (synchronization.getClass().getName().startsWith(HIBERNATE_PKG_NAME)) {
+            hibernateSyncs.add(synchronization);
         } else {
             otherSyncs.add(synchronization);
         }
@@ -82,6 +86,7 @@ public class AgroalOrderedLastSynchronizationList implements Synchronization {
         // run the ARC syncs first and the Agroal syncs last
         runBeforeSynchs(arqSyncs);
         runBeforeSynchs(otherSyncs);
+        runBeforeSynchs(hibernateSyncs);
         runBeforeSynchs(agroalSyncs);
     }
 
@@ -89,6 +94,7 @@ public class AgroalOrderedLastSynchronizationList implements Synchronization {
     public void afterCompletion(int status) {
         runAfterSynchs(arqSyncs, status);
         runAfterSynchs(otherSyncs, status);
+        runAfterSynchs(hibernateSyncs, status);
         runAfterSynchs(agroalSyncs, status); // Agroal validates that connection (wrappers) are closed at the right time
     }
 
