@@ -36,6 +36,7 @@ import jakarta.transaction.RollbackException;
 import jakarta.transaction.Synchronization;
 import jakarta.transaction.SystemException;
 import jakarta.transaction.TransactionManager;
+import jakarta.transaction.TransactionSynchronizationRegistry;
 
 import org.jboss.logging.Logger;
 
@@ -274,6 +275,9 @@ class EventImpl<T> implements Event<T> {
                     // Note that tx observers are never async
                     InstanceHandle<TransactionManager> transactionManagerInstance = Arc.container()
                             .instance(TransactionManager.class);
+                    InstanceHandle<TransactionSynchronizationRegistry> transactionSynchronizationRegistryInstance = Arc
+                            .container()
+                            .instance(TransactionSynchronizationRegistry.class);
 
                     try {
                         if (transactionManagerInstance.isAvailable() &&
@@ -291,12 +295,13 @@ class EventImpl<T> implements Event<T> {
                             }
 
                             Synchronization sync = new ArcSynchronization(deferredEvents);
-                            TransactionManager txManager = transactionManagerInstance.get();
+                            TransactionSynchronizationRegistry tsr = transactionSynchronizationRegistryInstance.get();
+
                             try {
                                 // NOTE - We are using standard synchronization on purpose as that seems more
                                 // fitting than interposed sync. Either way will have some use-cases that won't work.
                                 // See for instance discussions on https://github.com/eclipse-ee4j/cdi/issues/467
-                                txManager.getTransaction().registerSynchronization(sync);
+                                tsr.registerInterposedSynchronization(sync);
                                 // registration succeeded, notify all non-tx observers synchronously
                                 predicate = predicate.and(this::isNotTxObserver);
                             } catch (Exception e) {
