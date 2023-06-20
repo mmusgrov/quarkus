@@ -132,8 +132,14 @@ public class AgroalOrderedLastSynchronizationList implements Synchronization {
         // add the synchronization to the group that matches this package, if there is no matching group then add it to the
         // catch-all group (otherSyncs)
         String packageName = synchronization.getClass().getName();
-        SynchronizationGroup synchGroup = synchGroups.stream()
-                .filter(g -> packageName.startsWith(g.packageName)).findFirst().orElse(otherSyncs);
+        SynchronizationGroup synchGroup = otherSyncs;
+
+        for (SynchronizationGroup g : synchGroups) {
+            if (packageName.startsWith(g.packageName)) {
+                synchGroup = g;
+                break;
+            }
+        }
 
         synchGroup.add(synchronization);
     }
@@ -145,12 +151,16 @@ public class AgroalOrderedLastSynchronizationList implements Synchronization {
     @Override
     public void beforeCompletion() {
         // run each group of synchs according to the order they were added to the list
-        synchGroups.forEach(SynchronizationGroup::beforeCompletion);
+        for (SynchronizationGroup g : synchGroups) {
+            g.beforeCompletion();
+        }
     }
 
     @Override
     public void afterCompletion(int status) {
-        // run each group of synchs according to the order they were added to the collection
-        synchGroups.forEach(g -> g.afterCompletion(status));
+        // run each group of synchs according to the order they were added to the list
+        for (SynchronizationGroup g : synchGroups) {
+            g.afterCompletion(status);
+        }
     }
 }
